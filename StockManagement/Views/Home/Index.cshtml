@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Welcome to the Stock Management System</h1>
+
+<p>This system lets users order items and lets managers manage inventory and process orders.</p>
+
+@if (Context.Session.GetString("Username") == null)
+{
+    <p><a asp-controller="Account" asp-action="Login">Log in here</a></p>
+}

@@ -1,0 +1,38 @@
+﻿@model List<StockManagement.Models.Item>
+@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<h2>Welcome, User</h2>
+<a asp-controller="Account" asp-action="Logout">Logout</a>
+
+<hr />
+
+<h3>Available Items</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Order</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@item.Quantity</td>
+                <td>
+                    <form method="post" asp-action="PlaceOrder">
+                        <input type="hidden" name="itemId" value="@item.Id" />
+                        <input type="number" name="quantity" min="1" max="@item.Quantity" required />
+                        <button type="submit">Order</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,85 @@
+﻿@model List<StockManagement.Models.Item>
+@{
+    ViewData["Title"] = "Manager Dashboard";
+    var orders = ViewBag.Orders as List<StockManagement.Models.Order>;
+}
+
+<h2>Welcome, Manager</h2>
+<a asp-controller="Account" asp-action="Logout">Logout</a>
+
+<hr />
+
+<h3>Unprocessed Orders</h3>
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Mark Processed</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in orders)
+        {
+            <tr>
+                <td>@order.User.Username</td>
+                <td>@order.Item.Name</td>
+                <td>@order.Quantity</td>
+                <td>
+                    <form method="post" asp-action="MarkOrderProcessed">
+                        <input type="hidden" name="orderId" value="@order.Id" />
+                        <button type="submit">Done</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h3>Stock Items</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th><th>Price</th><th>Quantity</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Quantity</td>
+                <td>
+                    <!-- Update form in a separate row -->
+                    <form method="post" asp-action="UpdateItem">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <input type="text" name="name" value="@item.Name" />
+                        <input type="number" name="price" step="0.01" value="@item.Price" />
+                        <input type="number" name="quantity" value="@item.Quantity" />
+                        <button type="submit">Update</button>
+                    </form>
+
+                    <!-- Delete form in a separate row -->
+                    <form method="post" asp-action="DeleteItem" style="display:inline;">
+                        <input type="hidden" name="itemId" value="@item.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<h3>Add New Item</h3>
+<form method="post" asp-action="AddItem">
+    <input type="text" name="name" placeholder="Item Name" required />
+    <input type="number" name="price" step="0.01" placeholder="Price" required />
+    <input type="number" name="quantity" placeholder="Quantity" required />
+    <button type="submit">Add</button>
+</form>

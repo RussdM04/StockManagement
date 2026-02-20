@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Stock Management</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <a asp-controller="Home" asp-action="Index">Home</a>
+
+            @if (Context.Session.GetString("Username") != null)
+            {
+                if (Context.Session.GetString("Role") == "manager")
+                {
+                    <a asp-controller="Stock" asp-action="ManagerDashboard">Manager Dashboard</a>
+                }
+                else if (Context.Session.GetString("Role") == "user")
+                {
+                    <a asp-controller="Stock" asp-action="UserDashboard">User Dashboard</a>
+                }
+
+                <span>Hello, @Context.Session.GetString("Username") :) </span>
+                <a asp-controller="Account" asp-action="Logout">Logout</a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login">Login</a>
+            }
+        </nav>
+    </header>
+
+    <main role="main" class="container">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>&copy; 2025 - Stock Management</p>
+    </footer>
+</body>
+</html>
